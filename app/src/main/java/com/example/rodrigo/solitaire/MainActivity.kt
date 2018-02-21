@@ -16,7 +16,17 @@ class MainActivity : AppCompatActivity() {
         var str = ""
 
         for(card in deck.cards) {
-            str += card.number.toString() + " - " + card.suit.toString() + "\n"
+            val suit : String
+
+            when(card.suit) {
+                Deck.SUIT_DIAMONDS -> suit = "♦"
+                Deck.SUIT_CLUBS -> suit = "♣"
+                Deck.SUIT_HEARTS -> suit = "♥"
+                Deck.SUIT_SPADES -> suit = "♠"
+                else -> suit = "ERROR"
+            }
+
+            str += card.number.toString() + " - " + suit + "\n"
         }
 
         textView.setText(str)
