@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
             val suit : String
 
             when(card.suit) {
-                Deck.SUIT_DIAMONDS -> suit = "♦"
-                Deck.SUIT_CLUBS -> suit = "♣"
-                Deck.SUIT_HEARTS -> suit = "♥"
-                Deck.SUIT_SPADES -> suit = "♠"
+                Card.SUIT_DIAMONDS -> suit = "♦"
+                Card.SUIT_CLUBS -> suit = "♣"
+                Card.SUIT_HEARTS -> suit = "♥"
+                Card.SUIT_SPADES -> suit = "♠"
                 else -> suit = "ERROR"
             }
 

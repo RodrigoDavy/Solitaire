@@ -8,19 +8,12 @@ class Deck internal constructor() {
 
     init {
         val numbers = intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-        val suits = intArrayOf(SUIT_DIAMONDS, SUIT_CLUBS, SUIT_HEARTS, SUIT_SPADES)
+        val suits = intArrayOf(Card.SUIT_DIAMONDS,Card.SUIT_CLUBS,Card.SUIT_HEARTS,Card.SUIT_SPADES)
 
         for (suit in suits) {
             for (number in numbers) {
                 cards.add(Card(number, suit))
             }
         }
-    }
-
-    companion object {
-        val SUIT_DIAMONDS = 0
-        val SUIT_CLUBS = 1
-        val SUIT_HEARTS = 2
-        val SUIT_SPADES = 3
     }
 }
