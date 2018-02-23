@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         val textView = findViewById<TextView>(R.id.console)
         var str = ""
 
+        deck.shuffle()
+
         for(card in deck.cards) {
             val suit : String
 
@@ -29,6 +31,6 @@ class MainActivity : AppCompatActivity() {
             str += card.number.toString() + " - " + suit + "\n"
         }
 
-        textView.setText(str)
+        textView.text = str
     }
 }
