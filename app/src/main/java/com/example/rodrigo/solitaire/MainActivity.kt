@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun next(view: View) {
-        val card = table.nextDeck()
+        val card = table.nextFromDeck()
         val textView = findViewById<TextView>(R.id.console)
 
         if(card==null) {
