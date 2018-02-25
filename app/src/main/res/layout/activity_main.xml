@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/holo_green_light"
     tools:context="com.example.rodrigo.solitaire.MainActivity">
 
     <TextView
         android:id="@+id/console"
         android:padding="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:text="" />
 
     <Button
@@ -28,39 +30,60 @@
             android:id="@+id/pilha0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
 
         <TextView
             android:id="@+id/pilha1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
 
         <TextView
             android:id="@+id/pilha2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
         <TextView
             android:id="@+id/pilha3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
         <TextView
             android:id="@+id/pilha4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
         <TextView
             android:id="@+id/pilha5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
         <TextView
             android:id="@+id/pilha6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="select"/>
 
     </LinearLayout>
 

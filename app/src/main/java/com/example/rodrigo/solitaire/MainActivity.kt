@@ -8,7 +8,8 @@ import android.widget.TextView
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
-    val table = Table()
+    private val table = Table()
+    private var selected : View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,14 +24,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun printLower(textView: TextView,cards: ArrayList<Card>) {
+    private fun printLower(textView: TextView,cards: ArrayList<Card>) {
         var str = ""
 
-        for(card in cards) {
-            str += card.number.toString() + " - " + card.suit.toString() + "\n"
+        for(i in 0 until cards.size) {
+            if(i==(cards.size-1)) {
+                str += cards[i].number.toString() + " - " + cards[i].suit.toString() + "\n"
+            }else{
+                str += "? - ?\n"
+            }
         }
 
         textView.setText(str)
+    }
+
+    fun select(view: View) {
+        if(selected==null) {
+            view.setBackgroundResource(android.R.color.holo_blue_dark)
+            selected = view
+        }else{
+            selected!!.setBackgroundResource(android.R.color.white)
+            selected = null
+        }
     }
 
     fun next(view: View) {

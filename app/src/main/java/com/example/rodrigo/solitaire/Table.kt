@@ -11,10 +11,10 @@ class Table internal constructor(){
             ArrayList<Card>(), ArrayList<Card>(), ArrayList<Card>(), ArrayList<Card>())
 
     companion object {
-        val MOVE_DECK_TO_LOWER = 0
-        val MOVE_DECK_TO_UPPER = 1
-        val MOVE_LOWER_TO_UPPER = 2
-        val MOVE_UPPER_TO_LOWER = 3
+        const val MOVE_DECK_TO_LOWER = 0
+        const val MOVE_DECK_TO_UPPER = 1
+        const val MOVE_LOWER_TO_UPPER = 2
+        const val MOVE_UPPER_TO_LOWER = 3
     }
 
     init {
@@ -38,7 +38,7 @@ class Table internal constructor(){
         return deck.cards[deckPosition]
     }
 
-    fun removeFromDeck(): Card?{
+    private fun removeFromDeck(): Card?{
         if(deckPosition>=deck.cards.size) {
             deckPosition = 0
             return null
@@ -47,7 +47,7 @@ class Table internal constructor(){
         return deck.cards.removeAt(deckPosition)
     }
 
-    fun isColorDifferent(card1: Card, card2: Card): Boolean {
+    private fun isColorDifferent(card1: Card, card2: Card): Boolean {
         if(card1.suit == card2.suit) {
             return false
         }
@@ -83,7 +83,7 @@ class Table internal constructor(){
                         return true
                     }
                     return false
-                } 
+                }
 
                 if(cardAbove.suit!=cardBellow.suit) return false
 
@@ -93,6 +93,4 @@ class Table internal constructor(){
         }
         return false
     }
-
-
 }
