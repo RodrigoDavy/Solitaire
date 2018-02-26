@@ -5,58 +5,94 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private val table = Table()
-    private var selected : View? = null
+    private var selected = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val lowerStack = table.lowerStack
+        printLower()
+    }
 
-        val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+    private fun printDeck() {
+        val textView = findViewById<TextView>(R.id.console)
+        val card = table.getCardFromDeck()
 
-        for(x in Array(7,{i -> i})) {
-            printLower(linearLayout.getChildAt(x) as TextView,lowerStack[x])
+        if(card==null) {
+            textView.text = ""
+        }else{
+            val str = card.number.toString() + " - " + card.suit.toString()
+            textView.text = str
         }
     }
 
-    private fun printLower(textView: TextView,cards: ArrayList<Card>) {
-        var str = ""
+    private fun printLower() {
+        val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+        val lowerStack = table.lowerStack
 
-        for(i in 0 until cards.size) {
-            if(i==(cards.size-1)) {
-                str += cards[i].number.toString() + " - " + cards[i].suit.toString() + "\n"
-            }else{
-                str += "? - ?\n"
+        for(x in 0..6) {
+            val textView = linearLayout.getChildAt(x) as TextView
+            val cards = lowerStack[x]
+
+            var str = ""
+
+            for(i in 0 until cards.size) {
+                if(i<table.hiddenCards[x]) {
+                    str += "? - ?\n"
+                }else{
+                    str += cards[i].number.toString() + " - " + cards[i].suit.toString() + "\n"
+                }
             }
-        }
 
-        textView.setText(str)
+            textView.setText(str)
+        }
     }
 
     fun select(view: View) {
-        if(selected==null) {
+        val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+
+        if(selected<0) {
             view.setBackgroundResource(android.R.color.holo_blue_dark)
-            selected = view
+
+            var n = 0
+
+            while(n<7) {
+                if(view==linearLayout.getChildAt(n)) {
+                    break
+                }
+                n++
+            }
+
+            if(n<7) {
+                selected = n
+            }
         }else{
-            selected!!.setBackgroundResource(android.R.color.white)
-            selected = null
+            linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
+
+            var n = 0
+
+            while(n<7) {
+                if(view==linearLayout.getChildAt(n)) {
+                    break
+                }
+                n++
+            }
+
+            if(n<7) {
+                table.moveLowerLower(selected,n)
+                printLower()
+            }
+
+            selected = -1
         }
     }
 
     fun next(view: View) {
-        val card = table.nextFromDeck()
-        val textView = findViewById<TextView>(R.id.console)
+        table.nextCardFromDeck()
 
-        if(card==null) {
-            textView.setText("")
-        }else{
-            val str = card.number.toString() + " - " + card.suit.toString()
-            textView.setText(str)
-        }
+        printDeck()
     }
 }

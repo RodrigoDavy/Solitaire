@@ -1,20 +1,22 @@
 package com.example.rodrigo.solitaire
 
 class Table internal constructor(){
-    val deck = Deck()
-    var deckPosition = 0
+    private val deck = Deck()
+    private var deckPosition = 0
 
     val upperStack = arrayOf(ArrayList<Card>(), ArrayList<Card>(),
             ArrayList<Card>(), ArrayList<Card>())
 
     val lowerStack = arrayOf(ArrayList<Card>() ,ArrayList<Card>(), ArrayList<Card>(),
             ArrayList<Card>(), ArrayList<Card>(), ArrayList<Card>(), ArrayList<Card>())
+    val hiddenCards = arrayOf(0,0,0,0,0,0,0)
 
     companion object {
         const val MOVE_DECK_TO_LOWER = 0
         const val MOVE_DECK_TO_UPPER = 1
         const val MOVE_LOWER_TO_UPPER = 2
-        const val MOVE_UPPER_TO_LOWER = 3
+        const val MOVE_LOWER_TO_LOWER = 3
+        const val MOVE_UPPER_TO_LOWER = 4
     }
 
     init {
@@ -25,26 +27,50 @@ class Table internal constructor(){
                 lowerStack[i].add(deck.cards.removeAt(0))
             }
         }
+
+        for(i in lowerStack.indices) {
+            hiddenCards[i] = lowerStack[i].size - 1
+        }
     }
 
-    fun nextFromDeck() : Card? {
-        deckPosition++
-
-        if(deckPosition>=deck.cards.size) {
-            deckPosition = 0
+    fun getCardFromDeck() : Card? {
+        if((deckPosition<0) ||
+                (deckPosition>=deck.cards.size)) {
             return null
         }
 
         return deck.cards[deckPosition]
     }
 
-    private fun removeFromDeck(): Card?{
+    fun nextCardFromDeck() : Card? {
+        deckPosition++
+
         if(deckPosition>=deck.cards.size) {
-            deckPosition = 0
-            return null
+            deckPosition = -1
         }
 
-        return deck.cards.removeAt(deckPosition)
+        return getCardFromDeck()
+    }
+
+    fun moveLowerLower(origin: Int, destination: Int) {
+        val bellowCard = lowerStack[destination][lowerStack[destination].size-1]
+        val aboveCard = lowerStack[origin][lowerStack[origin].size-1]
+
+        if(isMoveValid(bellowCard,aboveCard, MOVE_LOWER_TO_LOWER)) {
+            lowerStack[destination].add(lowerStack[origin].removeAt(lowerStack[origin].size - 1))
+            hiddenCards[origin]--
+        }
+    }
+
+    fun moveDeckLower(destination: Int) {
+        if(deckPosition<deck.cards.size) {
+            val bellowCard = deck.cards[deckPosition]
+            val aboveCard = lowerStack[destination][lowerStack.size - 1]
+
+            if (isMoveValid(aboveCard, bellowCard, MOVE_DECK_TO_LOWER)) {
+                lowerStack[destination].add(deck.cards.removeAt(deckPosition))
+            }
+        }
     }
 
     private fun isColorDifferent(card1: Card, card2: Card): Boolean {
@@ -62,9 +88,9 @@ class Table internal constructor(){
         return true
     }
 
-    fun isMoveValid(cardAbove: Card?,cardBellow: Card?,moveType: Int): Boolean {
+    private fun isMoveValid(cardAbove: Card?,cardBellow: Card?,moveType: Int): Boolean {
         when(moveType){
-            MOVE_DECK_TO_LOWER, MOVE_UPPER_TO_LOWER -> {
+            MOVE_DECK_TO_LOWER, MOVE_UPPER_TO_LOWER, MOVE_LOWER_TO_LOWER -> {
                 if(cardBellow==null) return false
 
                 if(cardAbove==null) return true
