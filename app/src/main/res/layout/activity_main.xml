@@ -7,33 +7,91 @@
     android:background="@android:color/holo_green_light"
     tools:context="com.example.rodrigo.solitaire.MainActivity">
 
-    <TextView
-        android:id="@+id/deck"
-        android:padding="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:onClick="selectDeck"
-        android:text="" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:onClick="next"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_dark"
+            android:onClick="next"/>
+
+        <TextView
+            android:id="@+id/deck"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="selectDeck"
+            android:text="" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp" />
+
+        <TextView
+            android:id="@+id/upper1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="selectDeck"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/upper2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="selectDeck"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/upper3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="selectDeck"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/upper4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@android:color/white"
+            android:onClick="selectDeck"
+            android:text="" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lower_stack"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
 
         <TextView
             android:id="@+id/pilha0"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
             android:background="@android:color/white"
             android:onClick="selectLower"/>
 
