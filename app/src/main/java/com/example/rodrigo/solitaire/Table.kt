@@ -53,11 +53,37 @@ class Table internal constructor(){
     }
 
     fun moveLowerLower(origin: Int, destination: Int) {
-        val bellowCard = lowerStack[destination][lowerStack[destination].size-1]
-        val aboveCard = lowerStack[origin][lowerStack[origin].size-1]
+        val aboveCard : Card? = if(lowerStack[destination].size > 0) {
+            lowerStack[destination][lowerStack[destination].size - 1]
+        }else{
+            null
+        }
+        val bellowCard : Card? = if(lowerStack[origin].size > 0) {
+            lowerStack[origin][lowerStack[origin].size - 1]
+        }else{
+            null
+        }
 
-        if(isMoveValid(bellowCard,aboveCard, MOVE_LOWER_TO_LOWER)) {
+        if(isMoveValid(aboveCard,bellowCard, MOVE_LOWER_TO_LOWER)) {
             lowerStack[destination].add(lowerStack[origin].removeAt(lowerStack[origin].size - 1))
+            hiddenCards[origin]--
+        }
+    }
+
+    fun moveLowerUpper(origin: Int, destination: Int) {
+        val aboveCard : Card? = if(lowerStack[origin].size > 0) {
+            lowerStack[origin][lowerStack[origin].size - 1]
+        }else{
+            null
+        }
+        val bellowCard : Card? = if(upperStack[destination].size>0) {
+            upperStack[destination][upperStack[destination].size-1]
+        }else{
+            null
+        }
+
+        if(isMoveValid(aboveCard,bellowCard, MOVE_LOWER_TO_UPPER)) {
+            upperStack[destination].add(lowerStack[origin].removeAt(lowerStack[origin].size - 1))
             hiddenCards[origin]--
         }
     }
@@ -65,10 +91,29 @@ class Table internal constructor(){
     fun moveDeckLower(destination: Int) {
         if(deckPosition<deck.cards.size) {
             val bellowCard = deck.cards[deckPosition]
-            val aboveCard = lowerStack[destination][lowerStack[destination].size - 1]
+            val aboveCard = if(lowerStack[destination].size > 0) {
+                lowerStack[destination][lowerStack[destination].size - 1]
+            }else{
+                null
+            }
 
             if (isMoveValid(aboveCard, bellowCard, MOVE_DECK_TO_LOWER)) {
                 lowerStack[destination].add(deck.cards.removeAt(deckPosition))
+            }
+        }
+    }
+
+    fun moveDeckUpper(destination: Int) {
+        if(deckPosition<deck.cards.size) {
+            val aboveCard = deck.cards[deckPosition]
+            val bellowCard : Card? = if(upperStack[destination].size>0) {
+                upperStack[destination][upperStack[destination].size - 1]
+            }else{
+                null
+            }
+
+            if (isMoveValid(aboveCard, bellowCard, MOVE_DECK_TO_UPPER)) {
+                upperStack[destination].add(deck.cards.removeAt(deckPosition))
             }
         }
     }

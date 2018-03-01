@@ -51,6 +51,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun printUpper() {
+        val upperStack = arrayOf(
+            findViewById<TextView>(R.id.upper1),
+            findViewById<TextView>(R.id.upper2),
+            findViewById<TextView>(R.id.upper3),
+            findViewById<TextView>(R.id.upper4))
+
+        val list = table.upperStack
+
+        for(i in list.indices) {
+            if(list[i].size>0) {
+                val num = list[i][list[i].size-1].number
+                val suit = list[i][list[i].size-1].suit
+
+                upperStack[i].setText(num.toString() + " - " + suit.toString())
+            }else{
+                upperStack[i].setText("")
+            }
+        }
+
+    }
+
     fun selectDeck(view: View) {
         if(selected<0) {
             view.setBackgroundResource(android.R.color.holo_blue_dark)
@@ -61,35 +83,75 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun selectLower(view: View) {
-        val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+    fun selectUpper(view: View) {
+        val upperStack = arrayOf(
+                findViewById<TextView>(R.id.upper1),
+                findViewById<TextView>(R.id.upper2),
+                findViewById<TextView>(R.id.upper3),
+                findViewById<TextView>(R.id.upper4))
+
+        var n = 0
+
+        while(n<4) {
+            if((view as TextView)==upperStack[n]) {
+                break
+            }
+            n++
+        }
 
         if(selected<0) {
             view.setBackgroundResource(android.R.color.holo_blue_dark)
 
-            var n = 0
-
-            while(n<7) {
-                if(view==linearLayout.getChildAt(n)) {
-                    break
-                }
-                n++
-            }
-
-            if(n<7) {
-                selected = n
+            if(n<4) {
+                selected = n + 9
             }
         }else{
-            var n = 0
+            if(n<4) {
+                if(selected>8) {
+                    upperStack[selected-9].setBackgroundResource(android.R.color.white)
+                    //TODO upper to upper move
+                }else if(selected==8) {
+                    table.moveDeckUpper(n)
+                    printUpper()
+                    printDeck()
 
-            while(n<7) {
-                if(view==linearLayout.getChildAt(n)) {
-                    break
+                    findViewById<View>(R.id.deck).setBackgroundResource(android.R.color.white)
+                }else{
+                    table.moveLowerUpper(selected,n)
+                    printLower()
+                    printUpper()
+
+                    val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+
+                    linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
                 }
-                n++
             }
 
+            selected = -1
+        }
+    }
 
+    fun selectLower(view: View) {
+        val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
+
+        var n = 0
+
+        while(n<7) {
+            if(view==linearLayout.getChildAt(n)) {
+                break
+            }
+            n++
+        }
+
+        if(selected<0) {
+            view.setBackgroundResource(android.R.color.holo_blue_dark)
+
+            if (n < 7) {
+                selected = n
+            }
+        }else if(selected > 8) {
+            //TODO lower to upper
+        }else{
             if(n<7) {
                 if(selected==8) {
                     table.moveDeckLower(n)
