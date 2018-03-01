@@ -65,7 +65,7 @@ class Table internal constructor(){
     fun moveDeckLower(destination: Int) {
         if(deckPosition<deck.cards.size) {
             val bellowCard = deck.cards[deckPosition]
-            val aboveCard = lowerStack[destination][lowerStack.size - 1]
+            val aboveCard = lowerStack[destination][lowerStack[destination].size - 1]
 
             if (isMoveValid(aboveCard, bellowCard, MOVE_DECK_TO_LOWER)) {
                 lowerStack[destination].add(deck.cards.removeAt(deckPosition))

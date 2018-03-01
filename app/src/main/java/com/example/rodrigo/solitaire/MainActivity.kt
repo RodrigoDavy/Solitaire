@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printDeck() {
-        val textView = findViewById<TextView>(R.id.console)
+        val textView = findViewById<TextView>(R.id.deck)
         val card = table.getCardFromDeck()
 
         if(card==null) {
@@ -51,7 +51,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun select(view: View) {
+    fun selectDeck(view: View) {
+        if(selected<0) {
+            view.setBackgroundResource(android.R.color.holo_blue_dark)
+            selected = 8
+        }else{
+            view.setBackgroundResource(android.R.color.white)
+            selected = -1
+        }
+    }
+
+    fun selectLower(view: View) {
         val linearLayout = findViewById<LinearLayout>(R.id.lower_stack)
 
         if(selected<0) {
@@ -70,8 +80,6 @@ class MainActivity : AppCompatActivity() {
                 selected = n
             }
         }else{
-            linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
-
             var n = 0
 
             while(n<7) {
@@ -81,9 +89,20 @@ class MainActivity : AppCompatActivity() {
                 n++
             }
 
+
             if(n<7) {
-                table.moveLowerLower(selected,n)
-                printLower()
+                if(selected==8) {
+                    table.moveDeckLower(n)
+                    printLower()
+                    printDeck()
+
+                    findViewById<View>(R.id.deck).setBackgroundResource(android.R.color.white)
+                }else{
+                    table.moveLowerLower(selected,n)
+                    printLower()
+
+                    linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
+                }
             }
 
             selected = -1
