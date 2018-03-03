@@ -10,11 +10,19 @@ class MainActivity : AppCompatActivity() {
     private val table = Table()
     private var selected = -1
 
+    private var upperStack = arrayOf<TextView>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         printLower()
+
+        upperStack = arrayOf(
+                findViewById<TextView>(R.id.upper1),
+                findViewById<TextView>(R.id.upper2),
+                findViewById<TextView>(R.id.upper3),
+                findViewById<TextView>(R.id.upper4))
     }
 
     private fun printDeck() {
@@ -52,12 +60,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printUpper() {
-        val upperStack = arrayOf(
-            findViewById<TextView>(R.id.upper1),
-            findViewById<TextView>(R.id.upper2),
-            findViewById<TextView>(R.id.upper3),
-            findViewById<TextView>(R.id.upper4))
-
         val list = table.upperStack
 
         for(i in list.indices) {
@@ -65,9 +67,9 @@ class MainActivity : AppCompatActivity() {
                 val num = list[i][list[i].size-1].number
                 val suit = list[i][list[i].size-1].suit
 
-                upperStack[i].setText(num.toString() + " - " + suit.toString())
+                upperStack[i].text = num.toString() + " - " + suit.toString()
             }else{
-                upperStack[i].setText("")
+                upperStack[i].text = ""
             }
         }
 
@@ -84,12 +86,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun selectUpper(view: View) {
-        val upperStack = arrayOf(
-                findViewById<TextView>(R.id.upper1),
-                findViewById<TextView>(R.id.upper2),
-                findViewById<TextView>(R.id.upper3),
-                findViewById<TextView>(R.id.upper4))
-
         var n = 0
 
         while(n<4) {
@@ -109,7 +105,10 @@ class MainActivity : AppCompatActivity() {
             if(n<4) {
                 if(selected>8) {
                     upperStack[selected-9].setBackgroundResource(android.R.color.white)
-                    //TODO upper to upper move
+
+                    table.moveUpperUpper(selected-9,n)
+
+                    printUpper()
                 }else if(selected==8) {
                     table.moveDeckUpper(n)
                     printUpper()
@@ -149,21 +148,29 @@ class MainActivity : AppCompatActivity() {
             if (n < 7) {
                 selected = n
             }
-        }else if(selected > 8) {
-            //TODO lower to upper
         }else{
             if(n<7) {
-                if(selected==8) {
-                    table.moveDeckLower(n)
-                    printLower()
-                    printDeck()
+                when {
+                    selected==8 -> {
+                        table.moveDeckLower(n)
+                        printLower()
+                        printDeck()
 
-                    findViewById<View>(R.id.deck).setBackgroundResource(android.R.color.white)
-                }else{
-                    table.moveLowerLower(selected,n)
-                    printLower()
+                        findViewById<View>(R.id.deck).setBackgroundResource(android.R.color.white)
+                    }
+                    selected > 8 -> {
+                        table.moveUpperLower(selected-9,n)
+                        printLower()
+                        printUpper()
 
-                    linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
+                        upperStack[selected-9].setBackgroundResource(android.R.color.white)
+                    }
+                    else -> {
+                        table.moveLowerLower(selected,n)
+                        printLower()
+
+                        linearLayout.getChildAt(selected).setBackgroundResource(android.R.color.white)
+                    }
                 }
             }
 

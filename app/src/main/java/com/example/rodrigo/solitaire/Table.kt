@@ -17,6 +17,7 @@ class Table internal constructor(){
         const val MOVE_LOWER_TO_UPPER = 2
         const val MOVE_LOWER_TO_LOWER = 3
         const val MOVE_UPPER_TO_LOWER = 4
+        const val MOVE_UPPER_TO_UPPER = 5
     }
 
     init {
@@ -53,20 +54,23 @@ class Table internal constructor(){
     }
 
     fun moveLowerLower(origin: Int, destination: Int) {
-        val aboveCard : Card? = if(lowerStack[destination].size > 0) {
-            lowerStack[destination][lowerStack[destination].size - 1]
+        val aboveCard : Card? = if(lowerStack[origin].size > 0) {
+            lowerStack[origin][lowerStack[origin].size - 1]
         }else{
             null
         }
-        val bellowCard : Card? = if(lowerStack[origin].size > 0) {
-            lowerStack[origin][lowerStack[origin].size - 1]
+
+        val bellowCard : Card? = if(lowerStack[destination].size > 0) {
+            lowerStack[destination][lowerStack[destination].size - 1]
         }else{
             null
         }
 
         if(isMoveValid(aboveCard,bellowCard, MOVE_LOWER_TO_LOWER)) {
             lowerStack[destination].add(lowerStack[origin].removeAt(lowerStack[origin].size - 1))
-            hiddenCards[origin]--
+
+            if(lowerStack[origin].size == (hiddenCards[origin]))
+                hiddenCards[origin]--
         }
     }
 
@@ -84,14 +88,16 @@ class Table internal constructor(){
 
         if(isMoveValid(aboveCard,bellowCard, MOVE_LOWER_TO_UPPER)) {
             upperStack[destination].add(lowerStack[origin].removeAt(lowerStack[origin].size - 1))
-            hiddenCards[origin]--
+
+            if(lowerStack[origin].size == (hiddenCards[origin]))
+                hiddenCards[origin]--
         }
     }
 
     fun moveDeckLower(destination: Int) {
         if(deckPosition<deck.cards.size) {
-            val bellowCard = deck.cards[deckPosition]
-            val aboveCard = if(lowerStack[destination].size > 0) {
+            val aboveCard = deck.cards[deckPosition]
+            val bellowCard = if(lowerStack[destination].size > 0) {
                 lowerStack[destination][lowerStack[destination].size - 1]
             }else{
                 null
@@ -118,6 +124,38 @@ class Table internal constructor(){
         }
     }
 
+    fun moveUpperLower(origin: Int, destination: Int) {
+        val aboveCard = if(upperStack[origin].size>0)
+            upperStack[origin][upperStack[origin].size-1]
+        else
+            null
+
+        val bellowCard = if(lowerStack[destination].size>0)
+            lowerStack[destination][lowerStack[destination].size-1]
+        else
+            null
+
+        if(isMoveValid(aboveCard,bellowCard, MOVE_UPPER_TO_LOWER)) {
+            lowerStack[destination].add(upperStack[origin].removeAt(upperStack[origin].size-1))
+        }
+    }
+
+    fun moveUpperUpper(origin: Int, destination: Int) {
+        val aboveCard = if(upperStack[origin].size>0)
+            upperStack[origin][upperStack[origin].size-1]
+        else
+            null
+
+        val bellowCard = if(upperStack[destination].size>0)
+            upperStack[destination][upperStack[destination].size-1]
+        else
+            null
+
+        if(isMoveValid(aboveCard,bellowCard, MOVE_UPPER_TO_UPPER)) {
+            upperStack[destination].add(upperStack[origin].removeAt(upperStack[origin].size-1))
+        }
+    }
+
     private fun isColorDifferent(card1: Card, card2: Card): Boolean {
         if(card1.suit == card2.suit) {
             return false
@@ -136,16 +174,16 @@ class Table internal constructor(){
     private fun isMoveValid(cardAbove: Card?,cardBellow: Card?,moveType: Int): Boolean {
         when(moveType){
             MOVE_DECK_TO_LOWER, MOVE_UPPER_TO_LOWER, MOVE_LOWER_TO_LOWER -> {
-                if(cardBellow==null) return false
+                if(cardAbove==null) return false
 
-                if(cardAbove==null) return true
+                if(cardBellow==null) return true
 
                 if(isColorDifferent(cardAbove,cardBellow) &&
-                        (cardAbove.number==(cardBellow.number+1))) {
+                        (cardAbove.number==(cardBellow.number-1))) {
                     return true
                 }
             }
-            MOVE_DECK_TO_UPPER, MOVE_LOWER_TO_UPPER -> {
+            MOVE_DECK_TO_UPPER, MOVE_LOWER_TO_UPPER, MOVE_UPPER_TO_UPPER -> {
                 if(cardAbove==null)
                     return false
 
